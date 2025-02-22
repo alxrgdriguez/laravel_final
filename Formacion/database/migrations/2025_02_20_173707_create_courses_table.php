@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Status;
+use App\Enums\CourseStatus;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(Category::class)->constrained();
             $table->foreignIdFor(User::class, 'teacher_id')->constrained();
             $table->integer('duration')->unsigned();
-            $table->enum('status', Status::values())->default(Status::ACTIVE->value);
+            $table->enum('status', CourseStatus::values())->default(CourseStatus::ACTIVE->value);
             $table->timestamps();
         });
     }

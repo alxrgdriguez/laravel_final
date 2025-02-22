@@ -1,7 +1,7 @@
 <?php
 
-use App\Enums\Status;
-use App\Enums\StatusRegistration;
+use App\Enums\CourseStatus;
+use App\Enums\RegistrationStatus;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Course::class, 'course_id')->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class, 'user_id')->constrained()->cascadeOnDelete();
             $table->unique(['course_id', 'user_id']);
-            $table->enum('statusReg', StatusRegistration::values());
+            $table->enum('statusReg', RegistrationStatus::values());
             $table->timestamps();
         });
     }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\StatusRegistration;
+use App\Enums\RegistrationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,7 +28,7 @@ class Registration extends Pivot // Es la tabla intermedia de many-to-many
     public function casts(): array
     {
         return [
-            'statusReg' => StatusRegistration::class,
+            'statusReg' => RegistrationStatus::class,
         ];
     }
 

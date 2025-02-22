@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Status;
+use App\Enums\CourseStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,7 +30,7 @@ class Course extends Model
     }
 
     protected $casts = [
-        'status' => Status::class,
+        'status' => CourseStatus::class,
     ];
 
     protected $fillable = [
@@ -41,4 +41,6 @@ class Course extends Model
         'duration',
         'status',
     ];
+
+
 }

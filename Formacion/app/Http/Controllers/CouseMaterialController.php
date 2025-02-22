@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCouseMaterialRequest;
 use App\Http\Requests\UpdateCouseMaterialRequest;
 use App\Models\CourseMaterial;
+use Illuminate\Support\Facades\Request;
 
 class CouseMaterialController extends Controller
 {
+
+    // METHODS API
+
+
+    // METHODS WEB
+
     /**
      * Display a listing of the resource.
      */

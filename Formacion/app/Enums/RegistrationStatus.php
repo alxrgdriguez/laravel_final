@@ -1,6 +1,6 @@
 <?php
 namespace App\Enums;
-enum StatusRegistration: string
+enum RegistrationStatus: string
 {
     case PENDING = 'pending';
     case ACCEPTED = 'accepted';

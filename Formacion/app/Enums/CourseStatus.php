@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Status: string
+enum CourseStatus: string
 {
     case ACTIVE = 'active';
     case FINALIZED = 'finalized';

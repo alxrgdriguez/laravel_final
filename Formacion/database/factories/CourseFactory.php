@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\Status;
+use App\Enums\CourseStatus;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,7 +25,7 @@ class CourseFactory extends Factory
             'category_id' => Category::all()->random()->id,
             'teacher_id' => User::where('role', 'teacher')->first()->id,
             'duration' => $this->faker->numberBetween(10, 10000),
-            'status' => Status::ACTIVE,
+            'status' => CourseStatus::ACTIVE,
         ];
     }
 }

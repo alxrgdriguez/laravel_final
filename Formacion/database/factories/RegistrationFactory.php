@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enums\StatusRegistration;
+use App\Enums\RegistrationStatus;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,7 +22,7 @@ class RegistrationFactory extends Factory
         return [
             'course_id' => Course::all()->random()->id,
             'user_id' => User::all()->random()->id,
-            'statusReg' => fake()->randomElement(StatusRegistration::values()),
+            'statusReg' => fake()->randomElement(RegistrationStatus::values()),
         ];
     }
 }

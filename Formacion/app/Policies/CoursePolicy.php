@@ -25,11 +25,11 @@ class CoursePolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Solo los administradores pueden crear cursos
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**
@@ -41,11 +41,11 @@ class CoursePolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Solo los administradores pueden eliminar cursos
      */
     public function delete(User $user, Course $course): bool
     {
-        return false;
+        return $user->role === 'admin';
     }
 
     /**

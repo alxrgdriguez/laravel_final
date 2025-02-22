@@ -128,6 +128,7 @@
       <path value="$PROJECT_DIR$/Formacion/vendor/league/commonmark" />
       <path value="$PROJECT_DIR$/Formacion/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/Formacion/vendor/league/uri" />
+      <path value="$PROJECT_DIR$/Formacion/vendor/laravel/sanctum" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
