@@ -6,6 +6,8 @@ use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Course extends Model
 {
@@ -15,6 +17,16 @@ class Course extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function registration(): HasMany
+    {
+        return $this->hasMany(Registration::class);
+    }
+
+    public function evaluation(): HasMany
+    {
+        return $this->hasMany(Evaluation::class);
     }
 
     protected $casts = [
