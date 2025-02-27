@@ -1,0 +1,27 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{HOST_URL}}/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "dni": "12345678X",
+      "name": "Admin User",
+      "surnames": "Doe",
+      "email": "admin@example.com",
+      "password": "12345678",
+      "password_confirmation": "12345678",
+      "role": "admin",
+      "phone_number": "987654321",
+      "address": "123 Admin Street",
+      "city": "Admin City"
+  }
+  
+}

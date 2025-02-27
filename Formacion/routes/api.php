@@ -5,9 +5,10 @@ use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+
 Route::prefix('/v1')->group(function () {
 
-    // Rutas públicas
+    // Rutas públicas (no requieren autenticación)
     Route::post('/login', [UserController::class, 'api_login']);
     Route::post('/register', [UserController::class, 'api_register']);
 
@@ -16,10 +17,10 @@ Route::prefix('/v1')->group(function () {
 
         // Rutas de Cursos
         Route::prefix('/courses')->group(function () {
-            Route::get('/', [CourseController::class, 'api_index']);
-            Route::get('/{course}', [CourseController::class, 'api_show']);
-            Route::post('/', [CourseController::class, 'api_create'])->middleware('admin');
-            Route::delete('/{course}', [CourseController::class, 'api_delete'])->middleware('admin');
+            Route::get('/', [CourseController::class, 'api_index_courses']);
+            Route::get('/{course}', [CourseController::class, 'api_show_course']);
+            Route::post('/', [CourseController::class, 'api_create_course']);
+            Route::delete('/{course}', [CourseController::class, 'api_delete_course']);
         });
 
         // Rutas de Estudiantes
@@ -34,3 +35,4 @@ Route::prefix('/v1')->group(function () {
         });
     });
 });
+

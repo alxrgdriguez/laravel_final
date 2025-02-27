@@ -5,62 +5,33 @@ namespace App\Policies;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class RegistrationPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    use AuthorizesRequests;
+
+    public function viewAny(User $user)
     {
-        return false;
+        // Solo los administradores y profesores pueden ver todas las inscripciones
+        return in_array($user->role, ['admin', 'teacher']);
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Registration $registration): bool
+    public function view(User $user, Registration $registration)
     {
-        return false;
+        // Los alumnos solo pueden ver sus propias inscripciones
+        return $user->id === $registration->user_id || in_array($user->role, ['admin', 'teacher']);
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
+    public function create(User $user)
     {
-        return false;
+        // Solo los alumnos pueden crear inscripciones
+        return $user->role === 'student';
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Registration $registration): bool
+    public function delete(User $user, Registration $registration)
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Registration $registration): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Registration $registration): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Registration $registration): bool
-    {
-        return false;
+        // Solo los administradores pueden eliminar inscripciones
+        return $user->role === 'admin';
     }
 }

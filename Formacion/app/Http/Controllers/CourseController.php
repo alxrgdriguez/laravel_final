@@ -17,51 +17,40 @@ class CourseController extends Controller
     use AuthorizesRequests;
 
     // METHODS API
-
-    // Obtener cursos con filtros opcionales
-    public function api_index(Request $request)
+    public function api_index_courses(Request $request)
     {
-        $courses = Course::filter($request->only(['category', 'status']))->paginate($request->input('perPage', 10));
+        $courses = Course::filter($request->all())->paginate(10);
         return CourseResource::collection($courses);
     }
 
-    // Mostrar información de un curso
-    public function api_show(Course $course)
+    public function api_show_course(Course $course)
     {
         return new CourseResource($course);
     }
 
-    /**
-     * @throws AuthorizationException
-     */
-    // Crear un nuevo curso (solo administradores)
-    public function api_create(Request $request)
+    public function api_create_course(Request $request)
     {
         $this->authorize('create', Course::class);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'teacher_id' => 'required|exists:users,id',
-            'duration' => 'nullable|integer',
-            'status' => 'required|in:' . implode(',', CourseStatus::cases()),
+            'duration' => 'required|integer',
+            'status' => 'required|in:active,finished,cancelled',
         ]);
 
-        $course = Course::create($validated);
-        return response()->json(['message' => 'Course successfully registered', 'course' => new CourseResource($course)], 201);
+        $course = Course::create($request->all());
+        return new CourseResource($course);
     }
 
-    /**
-     * @throws AuthorizationException
-     */
-    // Eliminar un curso (solo administradores)
-    public function api_delete(Course $course)
+    public function api_delete_course(Course $course)
     {
         $this->authorize('delete', $course);
 
         $course->delete();
-        return response()->json(['message' => 'Course successfully removed']);
+        return response()->json(null, 204);
     }
 
     // METHODS WEB
