@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreCouseMaterialRequest;
 use App\Http\Requests\UpdateCouseMaterialRequest;
 use App\Models\CourseMaterial;
-use Illuminate\Support\Facades\Request;
 
 class CouseMaterialController extends Controller
 {

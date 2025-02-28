@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\RegistrationRequest;
+
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Http\Requests\UpdateRegistrationRequest;
 use App\Http\Resources\RegistrationResource;
-use App\Models\Course;
 use App\Models\Registration;
-use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Request;
 

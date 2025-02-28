@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\RegistrationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -25,12 +24,9 @@ class Registration extends Pivot // Es la tabla intermedia de many-to-many
         return $this->belongsTo(User::class);
     }
 
-    public function casts(): array
-    {
-        return [
-            'statusReg' => RegistrationStatus::class,
-        ];
-    }
+    protected $casts = [
+        'statusReg' => RegistrationStatus::class,
+    ];
 
 
     protected $fillable = [
