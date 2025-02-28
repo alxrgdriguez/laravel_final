@@ -1,0 +1,26 @@
+meta {
+  name: newCourse
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{HOST_URL}}/courses
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 33|Zw7Hugh87CMUulUE41gGCW7P0dPqHa0bEf4qZqdh7d326f0b
+}
+
+body:json {
+  {
+     "name": "Curso de Laravel Avanzado",
+     "description": "Aprende a hacer APIs con Laravel",
+     "category_id": 1,
+     "teacher_id": 2,
+     "duration": 20,
+     "status": "active"
+  }
+}
