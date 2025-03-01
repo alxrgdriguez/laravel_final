@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\RegistrationResource;
-use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -89,18 +88,6 @@ class UserController extends Controller
         $user = User::where('dni', $dni)->firstOrFail();
         $registrations = $user->registrations;
         return RegistrationResource::collection($registrations);
-    }
-
-    public function api_delete_registration($dni, $course_id)
-    {
-        $registration = Registration::where('user_id', $dni)
-            ->where('course_id', $course_id)
-            ->firstOrFail();
-
-        $this->authorize('delete', $registration);
-
-        $registration->delete();
-        return response()->json(null, 204);
     }
 
 }

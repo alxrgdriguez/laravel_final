@@ -21,8 +21,9 @@ class Registration extends Pivot // Es la tabla intermedia de many-to-many
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
+
 
     protected $casts = [
         'statusReg' => RegistrationStatus::class,

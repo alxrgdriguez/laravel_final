@@ -1,12 +1,12 @@
 meta {
-  name: getAllCourses
+  name: getRegistrationStudent
   type: http
-  seq: 1
+  seq: 3
 }
 
 get {
-  url: http://localhost/api/v1/courses
-  body: json
+  url: {{HOST_URL}}/students/64800105C/registrations
+  body: none
   auth: bearer
 }
 

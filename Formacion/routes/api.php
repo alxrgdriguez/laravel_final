@@ -34,10 +34,11 @@ Route::prefix('/v1')->group(function () {
             Route::get('/{dni}/registrations', [UserController::class, 'api_show_registrations']); // Ver inscripciones de un alumno
         });
 
-        // 📌 Rutas de Inscripciones
+        // 📌 Registration Routes
         Route::prefix('/registrations')->group(function () {
-            Route::post('/', [RegistrationController::class, 'api_create_registration']); // Inscribir a un alumno
-            Route::delete('/{id}', [RegistrationController::class, 'api_delete_registration']); // Cancelar una inscripción
+            Route::post('/', [RegistrationController::class, 'api_create_registration']); // Register a student
+            Route::delete('/{registration}', [RegistrationController::class, 'api_delete_registration'])->middleware('can:delete,registration'); // Eliminar una inscripción
+            Route::put('/{registration}/status', [RegistrationController::class, 'api_update_registration_status'])->middleware('can:approve,registration'); // Aprobar o rechazar una inscripcións
         });
     });
 });

@@ -27,7 +27,7 @@ class User extends Authenticatable
      */
     public function studentCourses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class, 'registrations', 'student_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'registrations', 'user_id', 'course_id');
     }
 
     /**
@@ -35,7 +35,7 @@ class User extends Authenticatable
      */
     public function registrations(): HasMany
     {
-        return $this->hasMany(Registration::class, 'student_id');
+        return $this->hasMany(Registration::class, 'user_id');
     }
 
     /**
@@ -43,7 +43,7 @@ class User extends Authenticatable
      */
     public function evaluations(): HasMany
     {
-        return $this->hasMany(Evaluation::class, 'student_id');
+        return $this->hasMany(Evaluation::class, 'user_id');
     }
 
     /**

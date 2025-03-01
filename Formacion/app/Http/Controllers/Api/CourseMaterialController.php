@@ -6,7 +6,7 @@ use App\Http\Requests\StoreCouseMaterialRequest;
 use App\Http\Requests\UpdateCouseMaterialRequest;
 use App\Models\CourseMaterial;
 
-class CouseMaterialController extends Controller
+class CourseMaterialController extends Controller
 {
 
     // METHODS API

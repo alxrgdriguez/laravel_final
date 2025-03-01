@@ -1,15 +1,22 @@
 meta {
-  name: getAllCourses
+  name: postCreateRegistration
   type: http
   seq: 1
 }
 
-get {
-  url: http://localhost/api/v1/courses
+post {
+  url: {{HOST_URL}}/registrations
   body: json
   auth: bearer
 }
 
 auth:bearer {
   token: 40|BoiCpk0qynCTTGrCKayq0CwI3qpE3curkUEKc2DO99b6fedd
+}
+
+body:json {
+  {
+    "course_id": "3",
+    "user_id": "5"
+  }
 }
