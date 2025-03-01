@@ -49,16 +49,20 @@ class RegistrationController extends Controller
         return response()->json($user->registrations);
     }
 
-    /**
-     * Cancel a registration (Students can cancel their own, Admins can cancel any).
-     */
     public function api_delete_registration(Registration $registration)
     {
+        // Manejo de error: si la inscripción no existe
+        if (!$registration) {
+            return response()->json(['message' => 'Registration not found'], 404);
+        }
+
         $this->authorize('delete', $registration);
 
+        // Eliminar la inscripción
         $registration->delete();
 
-        return response()->json(['message' => 'Registration deleted'], 204);
+        // Devolver mensaje de éxito
+        return response()->json(['message' => 'Registration deleted successfully'], 200);
     }
 
     /**

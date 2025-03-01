@@ -82,6 +82,12 @@ class UserController extends Controller
         ]);
     }
 
+    public function api_logout(Request $request)
+    {
+        $request->user()->tokens()->delete(); // 🔹 Elimina TODOS los tokens del usuario
+        return response()->json(['message' => 'Logged out'], 200);
+    }
+
 
     public function api_show_registrations($dni)
     {

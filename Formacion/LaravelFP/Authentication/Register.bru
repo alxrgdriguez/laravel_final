@@ -7,21 +7,25 @@ meta {
 post {
   url: {{HOST_URL}}/register
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: 
 }
 
 body:json {
   {
-      "dni": "42345678X",
-      "name": "STUDENT2",
-      "surnames": "Doe",
-      "email": "student2dmin@example.com",
+      "dni": "53345678X",
+      "name": "ESTUDIANTE",
+      "surnames": "MANCO",
+      "email": "manco@gmail.com",
       "password": "12345678",
       "password_confirmation": "12345678",
       "role": "student",
-      "phone_number": "924654341",
+      "phone_number": "114654341",
       "address": "123 Admin Street",
-      "city": "City"
+      "city": "Cuevas"
   }
   
 }

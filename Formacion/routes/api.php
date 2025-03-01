@@ -14,6 +14,9 @@ Route::prefix('/v1')->group(function () {
     // 📌 Rutas protegidas con Sanctum
     Route::middleware('auth:sanctum')->group(function () {
 
+        // Cerrar sesión
+        Route::post('/logout', [UserController::class, 'api_logout']);
+
         // 📌 Rutas de Cursos
         Route::prefix('/courses')->group(function () {
             Route::get('/', [CourseController::class, 'api_index_courses']); // Listar cursos con filtros
@@ -35,10 +38,17 @@ Route::prefix('/v1')->group(function () {
         });
 
         // 📌 Registration Routes
-        Route::prefix('/registrations')->group(function () {
-            Route::post('/', [RegistrationController::class, 'api_create_registration']); // Register a student
-            Route::delete('/{registration}', [RegistrationController::class, 'api_delete_registration'])->middleware('can:delete,registration'); // Eliminar una inscripción
-            Route::put('/{registration}/status', [RegistrationController::class, 'api_update_registration_status'])->middleware('can:approve,registration'); // Aprobar o rechazar una inscripcións
+        Route::prefix('/registrations')->middleware('auth:sanctum')->group(function () {
+            // 📌 Inscribir a un estudiante en un curso
+            Route::post('/', [RegistrationController::class, 'api_create_registration']);
+
+            // 📌 Eliminar una inscripción (solo administradores o el estudiante dueño)
+            Route::delete('/{registration}', [RegistrationController::class, 'api_delete_registration'])
+                ->middleware('can:delete,registration');
+
+            // 📌 Aprobar o rechazar una inscripción (solo administradores o profesores)
+            Route::put('/{registration}/status', [RegistrationController::class, 'api_update_registration_status'])
+                ->middleware('can:approve,registration');
         });
     });
 });
