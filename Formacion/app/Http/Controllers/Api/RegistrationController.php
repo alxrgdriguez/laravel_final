@@ -14,7 +14,7 @@ class RegistrationController extends Controller
     use AuthorizesRequests;
 
     /**
-     * Inscribir a un estudiante en un curso.
+     * Inscribir a un estudiante es un curso.
      */
     public function api_create_registration(Request $request)
     {

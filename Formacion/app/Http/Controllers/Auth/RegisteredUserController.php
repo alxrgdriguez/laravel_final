@@ -62,10 +62,7 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Redirigir según el rol del usuario
-        if ($user->role === UserRole::STUDENT) {
-            return redirect()->intended(route('index'));
-        }
+        return redirect()->intended(route('index', absolute: false));
 
-        return redirect(route('dashboard', absolute: false));
     }
 }

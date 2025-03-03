@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\UserRole;
 use App\Http\Resources\RegistrationResource;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -96,4 +97,13 @@ class UserController extends Controller
         return RegistrationResource::collection($registrations);
     }
 
+    // WEB
+    public function index(Request $request)
+    {
+        if ($request->user()->role === UserRole::STUDENT) {
+            return redirect()->route('student.courses.index');
+        }
+
+        return redirect()->route('admin.courses.index');
+    }
 }

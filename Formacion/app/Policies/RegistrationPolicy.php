@@ -46,12 +46,12 @@ class RegistrationPolicy
             return true;
         }
 
-        // Un profesor NO puede inscribirse en cursos
+        // Un profesor NO puede inscribirse es cursos
         if ($user->role === UserRole::TEACHER) {
             return false;
         }
 
-        // Un estudiante solo puede inscribirse si no está ya inscrito en el curso
+        // Un estudiante solo puede inscribirse si no está ya inscrito es el curso
         return $user->role === UserRole::STUDENT &&
             !$course->registrations()->where('student_id', $user->id)->exists();
     }

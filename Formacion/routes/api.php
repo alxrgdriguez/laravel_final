@@ -39,7 +39,7 @@ Route::prefix('/v1')->group(function () {
 
         // 📌 Registration Routes
         Route::prefix('/registrations')->middleware('auth:sanctum')->group(function () {
-            // 📌 Inscribir a un estudiante en un curso
+            // 📌 Inscribir a un estudiante es un curso
             Route::post('/', [RegistrationController::class, 'api_create_registration']);
 
             // 📌 Eliminar una inscripción (solo administradores o el estudiante dueño)

@@ -23,7 +23,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Relación: Un estudiante está inscrito en muchos cursos.
+     * Relación: Un estudiante está inscrito es muchos cursos.
      */
     public function studentCourses(): BelongsToMany
     {
@@ -46,6 +46,11 @@ class User extends Authenticatable
         return $this->hasMany(Evaluation::class, 'user_id');
     }
 
+    public function isAdmin() {
+        return $this->role === UserRole::ADMIN;
+    }
+
+
     /**
      * Atributos permitidos para asignación masiva.
      */
@@ -62,7 +67,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Atributos ocultos en respuestas JSON.
+     * Atributos ocultos es respuestas JSON.
      */
     protected $hidden = [
         'password',
