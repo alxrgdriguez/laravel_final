@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
         Route::patch('/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update');
 
-        // Solo el profesor puede añadir de sus propios cursos
+        // Solo el profesor puede añadir materiales a sus propios cursos
         Route::get('{course}/materials/add', [CourseMaterialController::class, 'create'])->name('admin.courses.materials.create');
         Route::post('{course}/materials/store', [CourseMaterialController::class, 'store'])->name('admin.courses.materials.store');
 
@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
         // Usuarios (Solo admin)
         Route::middleware(['onlyAdmin'])->group(function () {
             Route::get('/users', [UserController::class, 'index_admin_users'])->name('admin.users.index');
+            Route::patch('/users/{user}', [UserController::class, 'index_admin_update'])->name('admin.users.update');
+            Route::delete('/users/{user}', [UserController::class, 'index_admin_delete'])->name('admin.users.delete');
         });
 
     });

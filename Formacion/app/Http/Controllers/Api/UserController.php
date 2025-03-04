@@ -109,7 +109,46 @@ class UserController extends Controller
 
     public function index_admin_users(Request $request)
     {
-        return view('private.users.index');
+        $query = User::query();
+
+        // Filtro por nombre
+        if ($request->filled('search')) {
+            $query->where('name', 'LIKE', '%' . $request->search . '%');
+        }
+
+        // Filtro por rol
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        // Usamos simplePaginate() para la paginación simple
+        $users = $query->simplePaginate(10)->appends($request->query());
+
+        return view('private.users.index', compact('users'));
+
+    }
+
+    public function index_admin_update(Request $request, User $user)
+    {
+
+        $request->validate([
+            'role' => 'required|in:admin,teacher,student',
+        ]);
+
+        $user->update(['role' => $request->role]);
+
+        return redirect()->route('admin.users.index')->with('success', 'Rol del usuario actualizado correctamente.');
+    }
+
+    public function index_admin_delete(User $user)
+    {
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.users.index')->with('error', 'No puedes eliminar a un administrador.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente.');
 
     }
 }
