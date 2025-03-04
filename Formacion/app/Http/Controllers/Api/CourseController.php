@@ -116,5 +116,54 @@ class CourseController extends Controller
 
     }
 
+    public function destroy(Course $course)
+    {
+        try {
+            $course->delete();
+            return redirect()->route('admin.courses.index')->with('success', 'Curso eliminado correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.courses.index')->with('error', 'Error al eliminar el curso.');
+        }
+    }
+
+    public function finalize(Course $course)
+    {
+        if ($course->status->value === 'finalized') {
+            return redirect()->route('admin.courses.index')->with('error', 'Este curso ya ha sido finalizado.');
+        }
+
+        $course->status = CourseStatus::FINALIZED;
+        $course->save();
+
+        return redirect()->route('admin.courses.index')->with('success', 'Curso finalizado correctamente.');
+
+    }
+
+    public function edit(Course $course)
+    {
+        $categories = Category::all();
+        $users = User::where('role', 'teacher')->get(); // Obtén todos los profesores
+
+        return view('private.courses.editCourse', compact('course', 'categories', 'users'));
+    }
+
+    public function update(Request $request, Course $course)
+    {
+        // Validación de datos
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'teacher_id' => 'required|exists:users,id',
+            'category_id' => 'required|exists:categories,id',
+            'status' => 'required|in:active,finalized,cancelled',
+            'duration' => 'required|integer|min:1',
+            'description' => 'required|string',
+        ]);
+
+        // Actualizar los datos del curso
+        $course->update($validated);
+
+        // Redireccionar con mensaje de éxito
+        return redirect()->route('admin.courses.index')->with('success', 'Curso actualizado correctamente.');
+    }
 
 }

@@ -12,6 +12,18 @@
         @endif
     </div>
 
+    @if(session('success'))
+        <div class="p-4 mb-4 text-white bg-green-600 font-extrabold border border-green-400 rounded-lg">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="overflow-x-auto rounded-lg shadow-lg">
         @if ($courses->count())
             <table class="min-w-full border-collapse bg-white dark:bg-gray-800">
@@ -49,28 +61,26 @@
                         <td class="px-4 py-3 text-center">
                             <div class="flex justify-center items-center space-x-2">
                                 <!-- Botón Editar -->
-                                <a href="" class="px-3 py-1 w-24 bg-blue-600 font-bold text-white rounded-md text-xs hover:bg-blue-700 transition text-center">
+                                <a href="{{ route('admin.courses.edit', $course->id) }}"
+                                   class="px-3 py-1 w-24 bg-blue-600 font-bold text-white rounded-md text-xs hover:bg-blue-700 transition text-center">
                                     Editar
                                 </a>
                                 <!-- Botón Eliminar -->
-                                <form action="" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="px-3 py-1 w-24 bg-red-600 font-bold text-white rounded-md text-xs hover:bg-red-700 transition text-center">
-                                        Eliminar
-                                    </button>
-                                </form>
+                                <button onclick="confirmDelete(this)"
+                                        data-url="{{ route('admin.courses.delete', $course->id) }}"
+                                        class="px-3 py-1 w-24 bg-red-600 font-bold text-white rounded-md text-xs hover:bg-red-700 transition text-center">
+                                    Eliminar
+                                </button>
+
                                 <!-- Botón Finalizar / Finalizado -->
-                                <form action="" method="POST">
-                                    @csrf
-                                    <button type="submit"
-                                            class="px-3 py-1 w-24 text-white font-bold rounded-md text-xs transition text-center
-                                            {{ $course->status->value === 'finalized' ? 'bg-gray-500 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-900' }}"
-                                            @if($course->status->value === 'finalized') disabled title="Este curso ya ha sido finalizado" @endif
-                                    >
-                                        {{ $course->status->value === 'finalized' ? 'Finalizado' : 'Finalizar' }}
-                                    </button>
-                                </form>
+                                <button onclick="confirmFinalize(this)"
+                                        data-url="{{ route('admin.courses.finalize', $course->id) }}"
+                                        class="px-3 py-1 w-24 text-white font-bold rounded-md text-xs transition text-center
+                                        {{ $course->status->value === 'finalized' ? 'bg-gray-500 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-800' }}"
+                                        @if($course->status->value === 'finalized') disabled title="Este curso ya ha sido finalizado" @endif>
+                                    {{ $course->status->value === 'finalized' ? 'Finalizado' : 'Finalizar' }}
+                                </button>
+
                             </div>
                         </td>
                     </tr>
@@ -86,4 +96,70 @@
     <div class="mt-6">
         {{ $courses->links() }}
     </div>
+
+    <script>
+        function confirmDelete(button) {
+            const url = button.getAttribute('data-url');
+
+            Swal.fire({
+                title: "¿Estás seguro que deseas eliminar este curso?",
+                text: "No podrás revertir esta acción",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Crear y enviar un formulario con DELETE
+                    const form = document.createElement('form');
+                    form.action = url;
+                    form.method = 'POST';
+
+                    // Agregar el token CSRF
+                    form.innerHTML = `
+                    @csrf
+                    @method('DELETE')
+                    `;
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+
+        function confirmFinalize(button) {
+            const url = button.getAttribute('data-url');
+
+            Swal.fire({
+                title: "¿Deseas finalizar este curso?",
+                text: "Una vez finalizado, no podrá reactivarse.",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#4CAF50",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, finalizar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Crear y enviar un formulario con POST
+                    const form = document.createElement('form');
+                    form.action = url;
+                    form.method = 'POST';
+
+                    // Agregar el token CSRF y método PATCH
+                    form.innerHTML = `
+                    @csrf
+                    @method('PATCH')
+                    `;
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
 @endsection
+
+

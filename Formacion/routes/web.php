@@ -20,6 +20,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
         Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
         Route::post('/courses/store', [CourseController::class, 'store'])->name('admin.courses.store');
+        Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.delete');
+        Route::patch('/courses/{course}/finalize', [CourseController::class, 'finalize'])->name('admin.courses.finalize');
+        Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
+        Route::patch('/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update');
 
         // Inscripciones
         Route::get('/registrations', [RegistrationController::class, 'index'])->name('admin.registrations.index');
@@ -28,8 +32,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/evaluations', [EvaluationController::class, 'index'])->name('admin.evaluations.index');
 
         // Usuarios (Solo admin)
-        Route::middleware(['can:manage-users'])->group(function () {
-            Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::middleware(['onlyAdmin'])->group(function () {
+            Route::get('/users', [UserController::class, 'index_admin_users'])->name('admin.users.index');
         });
 
     });

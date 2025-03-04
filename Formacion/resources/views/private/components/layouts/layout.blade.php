@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 flex text-white">
@@ -37,6 +38,15 @@
                   {{ request()->routeIs('admin.evaluations.index') ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
             📊 <span>Evaluaciones</span>
         </a>
+
+        @if(Auth::user()->isAdmin())
+        <a href="{{ route('admin.users.index') }}"
+           class="flex items-center gap-2 p-4 text-lg font-medium text-gray-700 dark:text-gray-300 rounded-lg transition
+                  hover:bg-gray-200 dark:hover:bg-gray-700
+                  {{ request()->routeIs('admin.users.index') ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
+            👥 <span>Usuarios</span>
+        </a>
+        @endif
 
         @can('manage-users')
             <a href="{{ route('admin.users.index') }}"

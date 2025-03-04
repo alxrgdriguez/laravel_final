@@ -106,4 +106,10 @@ class UserController extends Controller
 
         return redirect()->route('admin.courses.index');
     }
+
+    public function index_admin_users(Request $request)
+    {
+        return view('private.users.index');
+
+    }
 }
