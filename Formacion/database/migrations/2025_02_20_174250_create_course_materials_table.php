@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('course_materials', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Course::class);
+            $table->foreignIdFor(Course::class)->constrained()->onDelete('cascade');
             $table->enum('type', MaterialType::values());
-            $table->string('url');
+            $table->string('file_path')->nullable(); // Ruta del archivo en storage
+            $table->string('original_name')->nullable(); // Nombre original del archivo
             $table->timestamps();
         });
     }

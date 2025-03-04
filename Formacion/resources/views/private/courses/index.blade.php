@@ -72,6 +72,14 @@
                                     Eliminar
                                 </button>
 
+                                @if(Auth::user()->isTeacher())
+                                    <a href="{{ route('admin.courses.materials.create', $course->id) }}"
+                                       class="px-3 py-1 w-30 bg-green-600 font-bold text-white rounded-md text-xs hover:bg-green-700 transition text-center">
+                                        Asignar Material
+                                    </a>
+                                @endif
+
+
                                 <!-- Botón Finalizar / Finalizado -->
                                 <button onclick="confirmFinalize(this)"
                                         data-url="{{ route('admin.courses.finalize', $course->id) }}"

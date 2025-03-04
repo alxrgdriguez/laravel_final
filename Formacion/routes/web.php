@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\CourseMaterialController;
 use App\Http\Controllers\Api\EvaluationController;
 use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Models\CourseMaterial;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,6 +26,10 @@ Route::middleware('auth')->group(function () {
         Route::patch('/courses/{course}/finalize', [CourseController::class, 'finalize'])->name('admin.courses.finalize');
         Route::get('/courses/{course}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
         Route::patch('/courses/{course}', [CourseController::class, 'update'])->name('admin.courses.update');
+
+        // Solo el profesor puede añadir de sus propios cursos
+        Route::get('{course}/materials/add', [CourseMaterialController::class, 'create'])->name('admin.courses.materials.create');
+        Route::post('{course}/materials/store', [CourseMaterialController::class, 'store'])->name('admin.courses.materials.store');
 
         // Inscripciones
         Route::get('/registrations', [RegistrationController::class, 'index'])->name('admin.registrations.index');
