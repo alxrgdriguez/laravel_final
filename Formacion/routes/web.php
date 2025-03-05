@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
 
         // Inscripciones
         Route::get('/registrations', [RegistrationController::class, 'index'])->name('admin.registrations.index');
+        Route::patch('/registrations/{registration}/accept', [RegistrationController::class, 'accept'])->name('admin.registrations.accept');
+        Route::patch('/registrations/{registration}/cancelled', [RegistrationController::class, 'reject'])->name('admin.registrations.cancelled');
 
         // Evaluaciones
         Route::get('/evaluations', [EvaluationController::class, 'index'])->name('admin.evaluations.index');

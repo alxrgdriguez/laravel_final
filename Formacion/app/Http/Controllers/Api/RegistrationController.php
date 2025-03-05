@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 
+use App\Enums\RegistrationStatus;
 use App\Models\Registration;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegistrationController extends Controller
 {
@@ -86,10 +88,25 @@ class RegistrationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = Auth::user();
+
+        // Si es admin, ve todas las inscripciones "PENDING"
+        if ($user->isAdmin()) {
+            $registrations = Registration::where('statusReg', RegistrationStatus::PENDING->value)->simplePaginate(10);
+        }
+        // Si es profesor, solo ve las inscripciones de sus cursos
+        else {
+            $registrations = Registration::whereHas('course', function ($query) use ($user) {
+                $query->where('teacher_id', $user->id);
+            })->where('status', RegistrationStatus::PENDING->value)->paginate(10);
+        }
+
+        return view('private.registrations.index', compact('registrations'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
