@@ -131,6 +131,10 @@ class UserController extends Controller
     public function index_admin_update(Request $request, User $user)
     {
 
+        if ($user->isAdmin()) {
+            return redirect()->route('admin.users.index')->with('error', 'No puedes cambiar el rol de un administrador.');
+        }
+
         $request->validate([
             'role' => 'required|in:admin,teacher,student',
         ]);

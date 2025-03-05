@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Enums\RegistrationStatus;
+use App\Http\Requests\StoreRegistrationRequest;
+use App\Http\Requests\UpdateRegistrationRequest;
 use App\Models\Registration;
 use App\Models\Course;
 use App\Models\User;
@@ -90,21 +92,42 @@ class RegistrationController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $query = Registration::query();
 
-        // Si es admin, ve todas las inscripciones "PENDING"
-        if ($user->isAdmin()) {
-            $registrations = Registration::where('statusReg', RegistrationStatus::PENDING->value)->simplePaginate(10);
-        }
-        // Si es profesor, solo ve las inscripciones de sus cursos
-        else {
-            $registrations = Registration::whereHas('course', function ($query) use ($user) {
-                $query->where('teacher_id', $user->id);
-            })->where('status', RegistrationStatus::PENDING->value)->paginate(10);
+        // Obtener usuario autenticado
+        $user = auth()->user();
+
+        // Si es profesor, solo ve inscripciones de sus cursos
+        if ($user->isTeacher()) {
+            $query->whereHas('course', function ($q) use ($user) {
+                $q->where('teacher_id', $user->id);
+            });
         }
 
-        return view('private.registrations.index', compact('registrations'));
+        // Filtrar por estado (por defecto "pending")
+        $status = $request->input('status', 'pending');
+        $query->where('statusReg', $status);
+
+        // Paginación con filtros aplicados
+        $registrations = $query->paginate(10);
+
+        return view('private.registrations.index', compact('registrations', 'status'));
     }
+
+
+    public function accept(Registration $registration)
+    {
+        $registration->update(['statusReg' => RegistrationStatus::ACCEPTED->value]);
+        return redirect()->route('admin.registrations.index')->with('success', 'Has aceptado la solicitud a
+        '. $registration->user->name . $registration->user->surnames . 'en el curso ' . $registration->course->name);
+    }
+
+    public function reject(Registration $registration)
+    {
+        $registration->update(['statusReg' => RegistrationStatus::CANCELLED->value]);
+        return redirect()->route('admin.registrations.index')->with('success', 'Has rechazado la solicitud a ' . $registration->user->name . $registration->user->surnames . 'en el curso ' . $registration->course->name);
+    }
+
 
 
 

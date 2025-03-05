@@ -40,7 +40,7 @@
             @foreach ($courses as $course)
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150">
                     <td class="px-4 py-3">{{ $course->name }}</td>
-                    <td class="px-4 py-3">{{ $course->teacher->name }}</td>
+                    <td class="px-4 py-3">{{ $course->teacher->name }} {{$course->teacher->surnames}}</td>
                     <td class="px-4 py-3 truncate max-w-[200px] hidden md:table-cell">{{ $course->description }}</td>
                     <td class="px-4 py-3">{{ $course->category->name }}</td>
                     <td class="px-4 py-3">
