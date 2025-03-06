@@ -6,12 +6,14 @@ namespace App\Http\Controllers\Api;
 use App\Enums\RegistrationStatus;
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Http\Requests\UpdateRegistrationRequest;
+use App\Mail\RegistrationStatusMail;
 use App\Models\Registration;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class RegistrationController extends Controller
 {
@@ -93,8 +95,6 @@ class RegistrationController extends Controller
     public function index(Request $request)
     {
         $query = Registration::query();
-
-        // Obtener usuario autenticado
         $user = auth()->user();
 
         // Si es profesor, solo ve inscripciones de sus cursos
@@ -104,9 +104,26 @@ class RegistrationController extends Controller
             });
         }
 
-        // Filtrar por estado (por defecto "pending")
-        $status = $request->input('status', 'pending');
-        $query->where('statusReg', $status);
+        // Filtro por estado (si no se selecciona, por defecto "pending" para profesores)
+        $status = $request->input('status', ($user->isTeacher() ? null : 'pending'));
+        if ($status) {
+            $query->where('statusReg', $status);
+        }
+
+        // Filtro por nombre y apellios del usuario
+        if ($request->filled('search')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->search . '%');
+                $q->orWhere('surnames', 'LIKE', '%' . $request->search . '%');
+            });
+        }
+
+        // Filtro por curso
+        if ($request->filled('course')) {
+            $query->whereHas('course', function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->course . '%');
+            });
+        }
 
         // Paginación con filtros aplicados
         $registrations = $query->paginate(10);
@@ -115,20 +132,27 @@ class RegistrationController extends Controller
     }
 
 
-    public function accept(Registration $registration)
+    public function accept($id)
     {
-        $registration->update(['statusReg' => RegistrationStatus::ACCEPTED->value]);
-        return redirect()->route('admin.registrations.index')->with('success', 'Has aceptado la solicitud a
-        '. $registration->user->name . $registration->user->surnames . 'en el curso ' . $registration->course->name);
+        $registration = Registration::findOrFail($id);
+        $registration->update(['statusReg' => 'accepted']);
+
+        // Enviar email
+        Mail::to($registration->user->email)->send(new RegistrationStatusMail($registration));
+
+        return redirect()->route('admin.registrations.index')->with('success', 'Inscripción aceptada y notificación enviada.');
     }
 
-    public function reject(Registration $registration)
+    public function cancel($id)
     {
-        $registration->update(['statusReg' => RegistrationStatus::CANCELLED->value]);
-        return redirect()->route('admin.registrations.index')->with('success', 'Has rechazado la solicitud a ' . $registration->user->name . $registration->user->surnames . 'en el curso ' . $registration->course->name);
+        $registration = Registration::findOrFail($id);
+        $registration->update(['statusReg' => 'cancelled']);
+
+        // Enviar email
+        Mail::to($registration->user->email)->send(new RegistrationStatusMail($registration));
+
+        return redirect()->route('admin.registrations.index')->with('error', 'Inscripción rechazada y notificación enviada.');
     }
-
-
 
 
     /**

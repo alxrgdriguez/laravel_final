@@ -34,10 +34,12 @@ Route::middleware('auth')->group(function () {
         // Inscripciones
         Route::get('/registrations', [RegistrationController::class, 'index'])->name('admin.registrations.index');
         Route::patch('/registrations/{registration}/accept', [RegistrationController::class, 'accept'])->name('admin.registrations.accept');
-        Route::patch('/registrations/{registration}/cancelled', [RegistrationController::class, 'reject'])->name('admin.registrations.cancelled');
+        Route::patch('/registrations/{registration}/cancelled', [RegistrationController::class, 'cancel'])->name('admin.registrations.cancelled');
 
         // Evaluaciones
         Route::get('/evaluations', [EvaluationController::class, 'index'])->name('admin.evaluations.index');
+        Route::get('/evaluations/{evaluation}/edit', [EvaluationController::class, 'edit'])->name('admin.evaluations.edit');
+        Route::patch('/evaluations/{evaluation}', [EvaluationController::class, 'update'])->name('admin.evaluations.update');
 
         // Usuarios (Solo admin)
         Route::middleware(['onlyAdmin'])->group(function () {
@@ -45,6 +47,7 @@ Route::middleware('auth')->group(function () {
             Route::patch('/users/{user}', [UserController::class, 'index_admin_update'])->name('admin.users.update');
             Route::delete('/users/{user}', [UserController::class, 'index_admin_delete'])->name('admin.users.delete');
         });
+
 
     });
 

@@ -5,15 +5,26 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\StoreEvaluationRequest;
 use App\Http\Requests\UpdateEvaluationRequest;
 use App\Models\Evaluation;
+use http\Client\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EvaluationController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    // Mostrar evaluaciones al admin y profesor
+    public function index(Request $request)
     {
-        //
+        $evaluations = auth()->user()->isAdmin()
+            ? Evaluation::simplePaginate(10)
+            : Evaluation::whereHas('course', function ($query) {
+                $query->where('teacher_id', auth()->id());
+            })->simplePaginate(10);
+
+        return view('private.evaluations.index', compact('evaluations'));
     }
 
     /**
@@ -40,21 +51,6 @@ class EvaluationController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Evaluation $evaluation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEvaluationRequest $request, Evaluation $evaluation)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
