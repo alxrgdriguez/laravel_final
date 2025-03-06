@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'adminOrTeacher' => AdminOrTeacher::class,
             'onlyAdmin' => onlyAdmin::class,
-            'onlyTeacher' => onlyTeacher::class
+            'onlyTeacher' => onlyTeacher::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
