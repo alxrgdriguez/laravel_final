@@ -17,7 +17,7 @@ class onlyTeacher
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->isTeacher()) {
+        if (Auth::user()->role->value === UserRole::TEACHER->value) {
             return $next($request);
         }
 

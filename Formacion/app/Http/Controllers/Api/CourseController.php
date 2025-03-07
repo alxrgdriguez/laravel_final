@@ -68,20 +68,33 @@ class CourseController extends Controller
     }
 
     // Inicio de la vista de cursos
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $query = Course::with('teacher');
 
-        if ($user->role === UserRole::ADMIN) {
-            $courses = Course::with('teacher')->simplePaginate(10);
-        } else {
-            $courses = Course::with('teacher')->where('teacher_id', $user->id)->paginate(10);
+        if ($user->role !== UserRole::ADMIN) {
+            $query->where('teacher_id', $user->id);
         }
 
+        if ($request->filled('course')) {
+            $query->where('name', 'like', '%' . $request->course . '%');
+        }
+
+        if ($request->filled('student')) {
+            $query->whereHas('students', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->student . '%');
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $courses = $query->simplePaginate(10);
+
         return view('private.courses.index', compact('courses'));
-
     }
-
 
     // Llamar a la vista de crear curso
     public function create(Request $request){
