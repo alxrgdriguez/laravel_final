@@ -113,6 +113,11 @@ class UserController extends Controller
         return redirect()->route('admin.courses.index');
     }
 
+    public function index_nosotros()
+    {
+        return view('public.nosotros.nosotros');
+    }
+
     // Página principal de los estudiantes
     public function index_students()
     {
@@ -173,6 +178,13 @@ class UserController extends Controller
             ]);
             return back()->with('success', 'Te has inscrito correctamente en el curso '. $course->name);
         }
+    }
+
+    public function my_courses()
+    {
+        $user = Auth::user();
+        $courses = $user->studentCourses;
+        return view('public.courses.my-courses', compact('courses'));
     }
 
     public function index_admin_users(Request $request)

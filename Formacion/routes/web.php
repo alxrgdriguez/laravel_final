@@ -9,12 +9,18 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/nosotros', [UserController::class, 'index_nosotros'])->name('student.nosotros.index');
+
+
 Route::middleware('auth')->group(function () {
 
     Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('/students', [UserController::class, 'index_students'])->name('student.courses.index');
     Route::get('/students/search', [UserController::class, 'search_students'])->name('students.courses.search');
     Route::post('/students/{courseId}/pickRegistration', [UserController::class, 'student_registrate'])->name('student.courses.pickRegistration');
+    Route::get('/students/my-courses', [UserController::class, 'my_courses'])->name('student.courses.my-courses');
+    Route::get('/students/my-courses/{courseId}/materials', [UserController::class, 'my_course_materials'])->name('student.courses.my-course-materials');
+    Route::get('/students/my-courses/{courseId}/students', [UserController::class, 'my_course_students'])->name('student.courses.my-course-students');
 
     // Agrupar rutas privadas (Solo admin y profesores pueden acceder)
     Route::middleware(['auth','adminOrTeacher'])->prefix('admin')->group(function () {

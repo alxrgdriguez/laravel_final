@@ -23,12 +23,12 @@
                 @endif
 
                 @if(Auth::user() && Auth::user()->isStudent())
-                    <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.index')" class="text-white hover:text-purple-400 transition">
+                    <x-nav-link :href="route('student.courses.my-courses')" :active="request()->routeIs('student.courses.my-courses')" class="text-white hover:text-purple-400 transition">
                         <p class="text-2xl font-semibold">📚 Mis Cursos</p>
                     </x-nav-link>
                 @endif
 
-                <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.index')" class="text-white hover:text-purple-400 transition">
+                <x-nav-link :href="route('student.nosotros.index')" :active="request()->routeIs('student.nosotros.index')" class="text-white hover:text-purple-400 transition">
                     <p class="text-2xl font-semibold">👨‍🎓 Nosotros</p>
                 </x-nav-link>
             </div>
