@@ -6,14 +6,15 @@ use App\Http\Controllers\Api\EvaluationController;
 use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Models\CourseMaterial;
 use Illuminate\Support\Facades\Route;
 
 
 Route::middleware('auth')->group(function () {
 
     Route::get('/', [UserController::class, 'index'])->name('index');
-    Route::get('/students', [UserController::class, 'index'])->name('student.courses.index');
+    Route::get('/students', [UserController::class, 'index_students'])->name('student.courses.index');
+    Route::get('/students/search', [UserController::class, 'search_students'])->name('students.courses.search');
+    Route::post('/students/{courseId}/pickRegistration', [UserController::class, 'student_registrate'])->name('student.courses.pickRegistration');
 
     // Agrupar rutas privadas (Solo admin y profesores pueden acceder)
     Route::middleware(['auth','adminOrTeacher'])->prefix('admin')->group(function () {

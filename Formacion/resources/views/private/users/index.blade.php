@@ -53,7 +53,7 @@
                 <tbody class="divide-y divide-gray-300 dark:divide-gray-600">
                 @foreach ($users as $user)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition duration-150">
-                        <td class="px-4 py-3">{{ $user->name }}</td>
+                        <td class="px-4 py-3">{{ $user->name }} {{ $user->surnames }}</td>
                         <td class="px-4 py-3">{{ $user->email }}</td>
 
                         <!-- Rol Actual -->

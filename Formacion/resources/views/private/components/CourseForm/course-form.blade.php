@@ -20,7 +20,7 @@
             <option value="" disabled {{ isset($course) ? '' : 'selected' }}>Selecciona un profesor</option>
             @foreach ($users as $user)
                 <option value="{{ $user->id }}" {{ old('teacher_id', $course->teacher_id ?? '') == $user->id ? 'selected' : '' }}>
-                    {{ $user->name }}
+                    {{ $user->name }} {{ $user->surnames }}
                 </option>
             @endforeach
         </select>

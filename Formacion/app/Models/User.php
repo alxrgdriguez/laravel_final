@@ -54,6 +54,10 @@ class User extends Authenticatable
         return $this->role === UserRole::TEACHER;
     }
 
+    public function isStudent() {
+        return $this->role === UserRole::STUDENT;
+    }
+
 
     /**
      * Atributos permitidos para asignación masiva.

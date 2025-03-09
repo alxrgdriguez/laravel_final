@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\CourseStatus;
 use App\Enums\UserRole;
 use App\Http\Resources\RegistrationResource;
+use App\Models\Category;
+use App\Models\Course;
+use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -97,6 +101,8 @@ class UserController extends Controller
         return RegistrationResource::collection($registrations);
     }
 
+    //////////////////////////////////////////////////////////////////////////
+
     // WEB
     public function index(Request $request)
     {
@@ -105,6 +111,68 @@ class UserController extends Controller
         }
 
         return redirect()->route('admin.courses.index');
+    }
+
+    // Página principal de los estudiantes
+    public function index_students()
+    {
+        // Verificar que el usuario es estudiante
+        if (!auth()->user()->isStudent()) {
+            abort(403, 'Acceso denegado');
+        }
+
+        // Obtener cursos activos
+        $courses = Course::where('status', CourseStatus::ACTIVE)->get();
+        $categories = Category::all();
+
+        // Retornar la vista correcta
+        return view('public.courses.index', compact('courses', 'categories'));
+    }
+
+    // Buscar cursos filtros
+    public function search_students(Request $request)
+    {
+        $query = Course::query();
+
+        // Filtrar por nombre del curso si se proporciona un término de búsqueda
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filtrar por categoría si se proporciona una categoría
+        if ($request->has('category') && !empty($request->category)) {
+            $query->where('category_id', $request->category);
+        }
+
+        $courses = $query->with('category', 'teacher')->get();
+        $categories = Category::all(); // Obtener todas las categorías para el filtro
+
+        return view('public.courses.index', compact('courses', 'categories'));
+    }
+
+    // Inscribirse al curso
+    public function student_registrate($courseId)
+    {
+        $user = Auth::user();
+        $course = Course::findOrFail($courseId);
+
+        // Verificar si el usuario ya está inscrito
+        $registration = Registration::where('user_id', $user->id)
+            ->where('course_id', $course->id)
+            ->first();
+
+        if ($registration) {
+            // Si ya está inscrito, cancelar inscripción
+            $registration->delete();
+            return back()->with('error', 'Has cancelado tu inscripción en el curso ' . $course->name);
+        } else {
+            // Si no está inscrito, inscribirse
+            Registration::create([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+            ]);
+            return back()->with('success', 'Te has inscrito correctamente en el curso '. $course->name);
+        }
     }
 
     public function index_admin_users(Request $request)
