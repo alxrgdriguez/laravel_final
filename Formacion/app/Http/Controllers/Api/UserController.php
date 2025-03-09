@@ -113,6 +113,7 @@ class UserController extends Controller
         return redirect()->route('admin.courses.index');
     }
 
+    // Pagina principal de nosotros
     public function index_nosotros()
     {
         return view('public.nosotros.nosotros');
@@ -126,13 +127,14 @@ class UserController extends Controller
             abort(403, 'Acceso denegado');
         }
 
-        // Obtener cursos activos
-        $courses = Course::where('status', CourseStatus::ACTIVE)->get();
+        // Obtener cursos activos y paginar de 9 en 9
+        $courses = Course::where('status', CourseStatus::ACTIVE)->simplePaginate(9);
         $categories = Category::all();
 
         // Retornar la vista correcta
         return view('public.courses.index', compact('courses', 'categories'));
     }
+
 
     // Buscar cursos filtros
     public function search_students(Request $request)
@@ -149,11 +151,13 @@ class UserController extends Controller
             $query->where('category_id', $request->category);
         }
 
-        $courses = $query->with('category', 'teacher')->get();
+        // Paginar los resultados de 9 en 9 usando simplePaginate
+        $courses = $query->with('category', 'teacher')->simplePaginate(9);
         $categories = Category::all(); // Obtener todas las categorías para el filtro
 
         return view('public.courses.index', compact('courses', 'categories'));
     }
+
 
     // Inscribirse al curso
     public function student_registrate($courseId)

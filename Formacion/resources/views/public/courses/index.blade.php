@@ -55,6 +55,10 @@
                         @endif
                     @endforeach
                 </div>
+                <!-- Paginación -->
+                <div class="mt-10">
+                    {{ $courses->links() }}
+                </div>
             @else
                 <p class="text-center py-10 text-gray-500">No hay cursos disponibles en este momento.</p>
             @endif
