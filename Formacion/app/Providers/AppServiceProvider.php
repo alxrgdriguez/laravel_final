@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Policies\CoursePolicy;
 use App\Policies\RegistrationPolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -33,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (env('APP_ENV') !== 'local') {
+            URL::forceScheme('https');
+        }
     }
 }
