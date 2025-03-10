@@ -69,7 +69,7 @@ class User extends Authenticatable
     {
         return $this->studentCourses()->where('status', CourseStatus::ACTIVE)
             ->whereHas('registrations', function ($q) {
-                $q->where('statusReg', RegistrationStatus::ACCEPTED);
+                $q->where('statusReg', RegistrationStatus::ACCEPTED)->where('user_id', $this->id);
             });
 
     }
