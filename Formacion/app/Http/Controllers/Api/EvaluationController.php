@@ -80,6 +80,8 @@ class EvaluationController extends Controller
             $evaluation = new Evaluation();
         }
 
+        $evaluation->course_id = $registration->course_id;
+        $evaluation->user_id = $registration->user_id;
         $evaluation->final_note = $request->input('final_note');
         $evaluation->comments = $request->input('comments');
         $evaluation->save();
