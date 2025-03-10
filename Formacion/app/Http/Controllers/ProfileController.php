@@ -38,6 +38,20 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
+    // Generar token de API
+    public function generateToken(Request $request)
+    {
+        $user = Auth::user();
+
+        // Eliminar tokens previos para evitar duplicaciones
+        $user->tokens()->delete();
+
+        // Generar un nuevo token
+        $token = $user->createToken('API Token')->plainTextToken;
+
+        return response()->json(['token' => $token]);
+    }
+
     /**
      * Delete the user's account.
      */

@@ -29,7 +29,10 @@ Route::middleware('auth')->group(function () {
 
         // Cursos
         Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses.index');
-        Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
+
+        Route::middleware(['onlyAdmin'])->group(function () {
+            Route::get('/courses/create', [CourseController::class, 'create'])->name('admin.courses.create');
+        });
         Route::post('/courses/store', [CourseController::class, 'store'])->name('admin.courses.store');
         Route::delete('/courses/{course}', [CourseController::class, 'destroy'])->name('admin.courses.delete');
         Route::patch('/courses/{course}/finalize', [CourseController::class, 'finalize'])->name('admin.courses.finalize');
@@ -60,6 +63,10 @@ Route::middleware('auth')->group(function () {
     });
 
 });
+
+Route::post('/profile/generate-token', [ProfileController::class, 'generateToken'])
+    ->middleware('auth')
+    ->name('profile.generate-token');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

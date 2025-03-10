@@ -32,6 +32,7 @@
         </div>
     @endif
 
+    @if($courses->count() > 0)
     <div class="overflow-x-auto rounded-lg shadow-lg">
         <table class="min-w-full bg-white dark:bg-gray-800" id="courses-table">
             <thead class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
@@ -100,6 +101,9 @@
         </table>
     </div>
 
+    @else
+        <p class="text-center py-10 text-gray-500">No hay cursos disponibles en este momento.</p>
+    @endif
     <div class="mt-6">
         {{ $courses->links() }}
     </div>
