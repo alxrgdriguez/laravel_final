@@ -22,7 +22,7 @@
                     </x-nav-link>
                 @endif
 
-                @if(Auth::user() && Auth::user()->isStudent())
+                @if(Auth::user() && Auth::user()->isStudent() || Auth::user()->isAdmin())
                     <x-nav-link :href="route('student.courses.my-courses')" :active="request()->routeIs('student.courses.my-courses')" class="text-white hover:text-purple-400 transition">
                         <p class="text-2xl font-semibold">📚 Mis Cursos</p>
                     </x-nav-link>
