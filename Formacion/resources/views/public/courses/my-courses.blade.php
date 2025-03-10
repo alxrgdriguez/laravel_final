@@ -23,9 +23,5 @@
                 <p class="text-center py-10 text-gray-500">No estás inscrito en ningún curso.</p>
             @endif
         </div>
-
-        <footer class="mt-auto py-6 bg-gray-800 dark:bg-gray-900 text-center text-white">
-            © {{ date('Y') }} 🚀 Plataforma de Formación Profesional. Todos los derechos reservados.
-        </footer>
     </div>
 @endsection

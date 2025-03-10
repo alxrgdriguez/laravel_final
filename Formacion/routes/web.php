@@ -15,8 +15,10 @@ Route::get('/nosotros', [UserController::class, 'index_nosotros'])->name('studen
 Route::middleware('auth')->group(function () {
 
     Route::get('/', [UserController::class, 'index'])->name('index');
-    Route::get('/students', [UserController::class, 'index_students'])->name('student.courses.index');
-    Route::get('/students/search', [UserController::class, 'search_students'])->name('students.courses.search');
+    Route::middleware(['auth', 'adminOrStudent'])->group(function () {
+        Route::get('/students', [UserController::class, 'index_students'])->name('student.courses.index');
+        Route::get('/students/search', [UserController::class, 'search_students'])->name('students.courses.search');
+    });
     Route::post('/students/{courseId}/pickRegistration', [UserController::class, 'student_registrate'])->name('student.courses.pickRegistration');
     Route::get('/students/my-courses', [UserController::class, 'my_courses'])->name('student.courses.my-courses');
     Route::get('/students/my-courses/{courseId}/materials', [UserController::class, 'my_course_materials'])->name('student.courses.my-course-materials');
@@ -54,7 +56,6 @@ Route::middleware('auth')->group(function () {
             Route::patch('/users/{user}', [UserController::class, 'index_admin_update'])->name('admin.users.update');
             Route::delete('/users/{user}', [UserController::class, 'index_admin_delete'])->name('admin.users.delete');
         });
-
 
     });
 

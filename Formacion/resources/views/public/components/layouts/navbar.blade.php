@@ -10,7 +10,7 @@
 
             <!-- Desktop Navigation -->
             <div class="hidden sm:flex space-x-8 text-lg font-semibold">
-                @if(Auth::user() && Auth::user()->isStudent())
+                @if(Auth::user() && Auth::user()->isStudent() || Auth::user()->isAdmin())
                 <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.index')" class="text-white hover:text-purple-400 transition">
                  <p class="text-2xl font-semibold">🏠 Inicio</p>
                 </x-nav-link>

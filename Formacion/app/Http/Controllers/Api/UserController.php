@@ -122,11 +122,6 @@ class UserController extends Controller
     // Página principal de los estudiantes
     public function index_students()
     {
-        // Verificar que el usuario es estudiante
-        if (!auth()->user()->isStudent()) {
-            abort(403, 'Acceso denegado');
-        }
-
         // Obtener cursos activos y paginar de 9 en 9
         $courses = Course::where('status', CourseStatus::ACTIVE)->simplePaginate(9);
         $categories = Category::all();

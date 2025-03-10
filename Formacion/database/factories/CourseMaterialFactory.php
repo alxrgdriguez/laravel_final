@@ -38,8 +38,7 @@ class CourseMaterialFactory extends Factory
         return [
             'course_id' => Course::inRandomOrder()->first()->id, // Tomar un curso aleatorio
             'type' => $this->faker->randomElement(MaterialType::values()), // Tipo aleatorio
-            'file_path' => $filePath, // Ruta de almacenamiento
-            'original_name' => $originalName, // Nombre original del archivo
+            'url' => $this->faker->url, // URL aleatoria
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CourseStatus;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -56,6 +57,18 @@ class User extends Authenticatable
 
     public function isStudent() {
         return $this->role === UserRole::STUDENT;
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'teacher_id');
+    }
+
+    // Sacar cursos activos de un profesor
+    public function getActiveCoursesByTeacher()
+    {
+        return $this->courses()->where('status', CourseStatus::ACTIVE);
+
     }
 
 

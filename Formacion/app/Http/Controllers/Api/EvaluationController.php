@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\RegistrationStatus;
 use App\Http\Requests\StoreEvaluationRequest;
 use App\Models\Evaluation;
 
+use App\Models\Registration;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,14 +21,11 @@ class EvaluationController extends Controller
     // Mostrar evaluaciones al admin y profesor
     public function index(Request $request)
     {
-        $query = Evaluation::query()
-            ->with(['user', 'course']);
+        // Sacar todos los registros que estan activos
+        $query = Registration::query()->where('statusReg', RegistrationStatus::ACCEPTED);
 
-        // Si el usuario es profesor, filtrar por cursos del profesor
-        if (Auth::user()->isTeacher()) {
-            $query->whereHas('course', function ($q) {
-                $q->where('teacher_id', Auth::id());
-            });
+        if (auth()->user()->isTeacher()) {
+            $query->whereHas('course', fn ($q) => $q->where('teacher_id', auth()->id()));
         }
 
         // Filtro por nombre de estudiante
@@ -54,6 +53,7 @@ class EvaluationController extends Controller
      */
     public function edit(Evaluation $evaluation)
     {
+
         if (auth()->user()->isTeacher() && auth()->id() !== $evaluation->course->teacher_id) {
             return redirect()->route('admin.evaluations.index')->with('error', 'No autorizado.');
         }

@@ -16,6 +16,7 @@
     <!-- Título -->
     <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-200 text-center">📊 Dashboard</h2>
 
+
     <!-- Navegación -->
     <nav class="mt-6 space-y-2 flex-1">
         <a href="{{ route('admin.courses.index') }}"
@@ -36,7 +37,7 @@
            class="flex items-center gap-2 p-4 text-lg font-medium text-gray-700 dark:text-gray-300 rounded-lg transition
                   hover:bg-gray-200 dark:hover:bg-gray-700
                   {{ request()->routeIs('admin.evaluations.index') ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
-            📊 <span>Evaluaciones</span>
+            🎓 <span>Evaluaciones</span>
         </a>
 
         @if(Auth::user()->isAdmin())
@@ -46,6 +47,15 @@
                   {{ request()->routeIs('admin.users.index') ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
             👥 <span>Usuarios</span>
         </a>
+        @endif
+        @if(Auth::user()->isAdmin())
+            <a href="{{ route('student.courses.index') }}"
+               class="flex items-center gap-2 p-4 text-lg font-medium text-gray-700 dark:text-gray-300 rounded-lg transition
+              hover:bg-gray-200 dark:hover:bg-gray-700
+              {{ request()->routeIs('student.courses.index') ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
+                🌐 <span>Web Students</span>
+            </a>
+
         @endif
 
         @can('manage-users')

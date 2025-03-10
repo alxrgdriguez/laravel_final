@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Course::class)->constrained()->onDelete('cascade');
             $table->enum('type', MaterialType::values());
-            $table->string('file_path')->nullable(); // Ruta del archivo en storage
-            $table->string('original_name')->nullable(); // Nombre original del archivo
+            $table->string('url')->nullable();
             $table->timestamps();
         });
     }

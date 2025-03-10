@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminOrStudent;
 use App\Http\Middleware\AdminOrTeacher;
 use App\Http\Middleware\onlyAdmin;
 use App\Http\Middleware\onlyTeacher;
@@ -18,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'adminOrTeacher' => AdminOrTeacher::class,
             'onlyAdmin' => onlyAdmin::class,
             'onlyTeacher' => onlyTeacher::class,
+            'adminOrStudent' => AdminOrStudent::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
