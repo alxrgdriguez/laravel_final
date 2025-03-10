@@ -183,7 +183,7 @@ class UserController extends Controller
     public function my_courses()
     {
         $user = Auth::user();
-        $courses = $user->studentCourses;
+        $courses = $user->getActiveCoursesByStudent()->get();
         return view('public.courses.my-courses', compact('courses'));
     }
 

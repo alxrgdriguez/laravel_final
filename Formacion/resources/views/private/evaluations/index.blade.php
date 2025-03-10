@@ -37,7 +37,7 @@
 
     <!-- Tabla de Evaluaciones -->
     <div class="overflow-x-auto rounded-lg shadow-lg">
-        @if($evaluations->count())
+        @if($registrations->count())
             <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow">
                 <thead class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
                 <tr>
@@ -49,15 +49,15 @@
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200 dark:divide-gray-600">
-                @foreach ($evaluations as $evaluation)
+                @foreach ($registrations as $registration)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <td class="px-4 py-3">{{ $evaluation->user->name }} {{ $evaluation->user->surnames }}</td>
-                        <td class="px-4 py-3">{{ $evaluation->course->name }}</td>
-                        <td class="px-4 py-3 text-center">{{ $evaluation->final_note ?? 'Sin calificar' }}</td>
-                        <td class="px-4 py-3 truncate max-w-[200px] dark:text-white">{{ $evaluation->comments ?? 'Sin comentarios' }}</td>
+                        <td class="px-4 py-3">{{ $registration->user->name }} {{ $registration->user->surnames }}</td>
+                        <td class="px-4 py-3">{{ $registration->course->name }}</td>
+                        <td class="px-4 py-3 text-center">{{ $registration->evaluation()->final_note ?? 'Sin calificar' }}</td>
+                        <td class="px-4 py-3 truncate max-w-[200px] dark:text-white">{{ $registration->evaluation()->comments ?? 'Sin comentarios' }}</td>
                         <td class="px-4 py-3 text-center">
-                            @if(auth()->user()->isAdmin() || auth()->id() === $evaluation->course->teacher_id)
-                                <a href="{{ route('admin.evaluations.edit', $evaluation->id) }}"
+                            @if(auth()->user()->isAdmin() || auth()->id() === $registration->course->teacher_id)
+                                <a href="{{ route('admin.evaluations.edit', $registration->id) }}"
                                    class="px-3 py-1 bg-yellow-500 text-black rounded-lg text-xs font-bold hover:bg-yellow-600 transition">
                                     Evaluar
                                 </a>
@@ -74,6 +74,6 @@
 
     <!-- Paginación -->
     <div class="mt-6">
-        {{ $evaluations->appends(request()->query())->links() }}
+        {{ $registrations->appends(request()->query())->links() }}
     </div>
 @endsection

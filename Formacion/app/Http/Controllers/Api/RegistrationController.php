@@ -7,12 +7,14 @@ use App\Enums\RegistrationStatus;
 use App\Http\Requests\StoreRegistrationRequest;
 use App\Http\Requests\UpdateRegistrationRequest;
 use App\Mail\RegistrationStatusMail;
+use App\Models\Evaluation;
 use App\Models\Registration;
 use App\Models\Course;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class RegistrationController extends Controller
@@ -135,12 +137,39 @@ class RegistrationController extends Controller
     public function accept($id)
     {
         $registration = Registration::findOrFail($id);
+
+        // Cambiar estado a "accepted"
         $registration->update(['statusReg' => 'accepted']);
+
+        // Verificar si la evaluación ya existe
+        $existingEvaluation = Evaluation::where('course_id', $registration->course_id)
+            ->where('user_id', $registration->user_id)
+            ->first();
+
+        if (!$existingEvaluation) {
+            try {
+                // Crear evaluación
+                $evaluation = Evaluation::create([
+                    'course_id' => $registration->course_id,
+                    'user_id' => $registration->user_id,
+                    'final_note' => null,
+                    'comments' => 'Pendiente de evaluación',
+                ]);
+
+                if (!$evaluation) {
+                    throw new \Exception("No se pudo crear la evaluación en la base de datos.");
+                }
+
+            } catch (\Exception $e) {
+                Log::error("Error al crear la evaluación: " . $e->getMessage());
+                return redirect()->route('admin.registrations.index')->with('error', 'Error al crear la evaluación: ' . $e->getMessage());
+            }
+        }
 
         // Enviar email
         Mail::to($registration->user->email)->send(new RegistrationStatusMail($registration));
 
-        return redirect()->route('admin.registrations.index')->with('success', 'Inscripción aceptada y notificación enviada.');
+        return redirect()->route('admin.registrations.index')->with('success', 'Inscripción aceptada y evaluación creada.');
     }
 
     public function cancel($id)

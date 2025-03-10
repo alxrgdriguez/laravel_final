@@ -47,8 +47,8 @@ Route::middleware('auth')->group(function () {
 
         // Evaluaciones
         Route::get('/evaluations', [EvaluationController::class, 'index'])->name('admin.evaluations.index');
-        Route::get('/evaluations/{evaluation}/edit', [EvaluationController::class, 'edit'])->name('admin.evaluations.edit');
-        Route::patch('/evaluations/{evaluation}', [EvaluationController::class, 'update'])->name('admin.evaluations.update');
+        Route::get('/evaluations/{registration}/edit', [EvaluationController::class, 'edit'])->name('admin.evaluations.edit');
+        Route::patch('/evaluations/{registration}', [EvaluationController::class, 'update'])->name('admin.evaluations.update');
 
         // Usuarios (Solo admin)
         Route::middleware(['onlyAdmin'])->group(function () {

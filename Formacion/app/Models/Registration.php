@@ -24,6 +24,10 @@ class Registration extends Pivot // Es la tabla intermedia de many-to-many
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function evaluation(): Evaluation
+    {
+        return Evaluation::query()->where('course_id', $this->course_id)->where('user_id', $this->user_id)->first();
+    }
 
     protected $casts = [
         'statusReg' => RegistrationStatus::class,

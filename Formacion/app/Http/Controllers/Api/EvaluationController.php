@@ -43,45 +43,51 @@ class EvaluationController extends Controller
             });
         }
 
-        $evaluations = $query->paginate(10);
+        $registrations = $query->paginate(10);
 
-        return view('private.evaluations.index', compact('evaluations'));
+        return view('private.evaluations.index', compact('registrations'));
     }
 
     /**
      * Mostrar formulario para editar evaluación.
      */
-    public function edit(Evaluation $evaluation)
+    public function edit($id)
     {
+        $registration = Registration::find($id);
 
-        if (auth()->user()->isTeacher() && auth()->id() !== $evaluation->course->teacher_id) {
-            return redirect()->route('admin.evaluations.index')->with('error', 'No autorizado.');
+        if (!$registration) {
+            return redirect()->route('admin.evaluations.index')->with('error', 'La evaluación no existe.');
         }
 
-        return view('private.evaluations.edit', compact('evaluation'));
+        return view('private.evaluations.edit', compact('registration'));
     }
 
 
     /**
      * Actualizar evaluación.
      */
-    public function update(Request $request, Evaluation $evaluation)
+    public function update(Request $request, Registration $registration)
     {
-        // Validar datos recibidos
-        $validated = $request->validate([
+
+        $request->validate([
             'final_note' => 'nullable|numeric|min:0|max:10',
             'comments' => 'nullable|string|max:500',
         ]);
 
-        // Actualizar la evaluación
-        $evaluation->update([
-            'final_note' => $validated['final_note'],
-            'comments' => $validated['comments'],
-        ]);
+        $evaluation = $registration->evaluation();
+
+        if (!$evaluation) {
+            $evaluation = new Evaluation();
+        }
+
+        $evaluation->final_note = $request->input('final_note');
+        $evaluation->comments = $request->input('comments');
+        $evaluation->save();
+
 
         // Redireccionar con mensaje de éxito
         return redirect()->route('admin.evaluations.index')
-            ->with('success', 'Evaluación actualizada correctamente al usuario ' . $evaluation->user->name . '.');
+            ->with('success', 'Evaluación actualizada correctamente al usuario ' . $registration->user->name . '.');
     }
 
 

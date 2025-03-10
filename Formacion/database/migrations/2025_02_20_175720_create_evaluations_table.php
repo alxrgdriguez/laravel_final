@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignIdFor(Course::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->unique(['course_id', 'user_id']);
-            $table->float('final_note');
-            $table->text('comments');
+            $table->float('final_note')->nullable(); // Permitir valores NULL
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }
