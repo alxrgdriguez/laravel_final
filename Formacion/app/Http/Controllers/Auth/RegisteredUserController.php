@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required|same:password',
-            'phone_number' => 'required|integer|min:9|max:9',
+            'phone_number' => 'required|string|min:9|max:9',
             'address' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'role' => 'required|in:student', // Solo permite 'student' como rol
