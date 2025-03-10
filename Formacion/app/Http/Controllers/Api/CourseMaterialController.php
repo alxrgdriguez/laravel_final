@@ -49,17 +49,19 @@ class CourseMaterialController extends Controller
             return back()->with('error', 'No se pudo subir el archivo.');
         }
 
-        $path = $file->store('materials/'. $course->name);
+        // Guardar en almacenamiento público
+        $path = $file->store('materials/' . $course->name, 'public');
 
         // Guardar en la base de datos
         CourseMaterial::create([
             'course_id' => $course->id,
             'type' => $request->type,
-            'url' => $path,
+            'url' => $path, // Guardamos la ruta del archivo
         ]);
 
         return redirect()->route('admin.courses.index')->with('success', 'Material subido correctamente al curso ' . $course->name);
     }
+
 
 
 

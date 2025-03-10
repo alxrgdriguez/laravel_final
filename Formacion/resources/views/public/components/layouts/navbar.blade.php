@@ -76,14 +76,14 @@
 
     <!-- Responsive Navigation Menu -->
     <div x-show="open" class="sm:hidden bg-gray-900 text-white p-5 text-lg max-h-[400px] overflow-hidden transition-all ease-in-out duration-300">
-        <x-nav-link :href="route('index')" :active="request()->routeIs('index')" class="block py-3 font-semibold">🏠 Inicio</x-nav-link>
+        <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.index')" class="block py-3 font-semibold">🏠 Inicio</x-nav-link>
 
         @if(Auth::user() && Auth::user()->isAdmin())
-            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="block py-3 font-semibold">📊 Dashboard</x-nav-link>
+            <x-nav-link :href="route('admin.courses.index')" :active="request()->routeIs('admin.courses.index')" class="block py-3 font-semibold">📊 Dashboard</x-nav-link>
         @endif
 
         @if(Auth::user() && Auth::user()->isStudent())
-            <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.index')" class="block py-3 font-semibold">📚 Mis Cursos</x-nav-link>
+            <x-nav-link :href="route('student.courses.my-courses')" :active="request()->routeIs('student.courses.my-courses')" class="block py-3 font-semibold">📚 Mis Cursos</x-nav-link>
         @endif
 
         <div class="border-t border-gray-700 my-3"></div>

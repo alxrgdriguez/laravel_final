@@ -60,7 +60,7 @@
                     {{ $courses->links() }}
                 </div>
             @else
-                <p class="text-center py-10 text-gray-500">No hay cursos disponibles en este momento.</p>
+                <p class="text-center py-10 text-gray-500"> ⚠️ No hay cursos disponibles en este momento.</p>
             @endif
         </div>
     </div>

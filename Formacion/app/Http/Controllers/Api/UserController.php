@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Http\Resources\RegistrationResource;
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\CourseMaterial;
 use App\Models\Registration;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -123,7 +124,7 @@ class UserController extends Controller
     public function index_students()
     {
         // Obtener cursos activos y paginar de 9 en 9
-        $courses = Course::where('status', CourseStatus::ACTIVE)->simplePaginate(9);
+        $courses = Course::where('status', CourseStatus::ACTIVE)->simplePaginate(8);
         $categories = Category::all();
 
         // Retornar la vista correcta
@@ -185,6 +186,18 @@ class UserController extends Controller
         $courses = $user->studentCourses;
         return view('public.courses.my-courses', compact('courses'));
     }
+
+    public function my_course_materials($courseId)
+    {
+        // Verificar que el curso exista
+        $course = Course::findOrFail($courseId);
+
+        // Obtener los materiales del curso
+        $materials = CourseMaterial::where('course_id', $courseId)->get();
+
+        return view('public.courses.my-course-material', compact('course', 'materials'));
+    }
+
 
     public function index_admin_users(Request $request)
     {
