@@ -50,6 +50,15 @@
                 👥 <span>Usuarios</span>
             </a>
         @endif
+
+        @if(Auth::user()->isAdmin())
+            <a href="{{ route('student.courses.index') }}"
+               class="flex items-center gap-2 p-4 text-lg font-medium text-gray-900 dark:text-gray-300 rounded-lg transition
+                      hover:bg-gray-300 dark:hover:bg-gray-700
+                      {{ request()->routeIs('student.courses.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
+                🌐 <span>Web Students</span>
+            </a>
+        @endif
     </nav>
 
     <!-- Usuario Dropdown -->
