@@ -35,7 +35,7 @@
                     name="password"
                     type="password"
                     class="mt-1 p-2 block w-3/4"
-                    placeholder="{{ __('Escriba su contraseña para eliminar su cuenta') }}"
+                    placeholder="{{ __('Escriba su contraseña') }}"
                 />
 
                 <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
@@ -47,7 +47,7 @@
                 </x-secondary-button>
 
                 <x-danger-button class="ms-3">
-                    {{ __('Escriba su contraseña') }}
+                    {{ __('Eliminar Cuenta') }}
                 </x-danger-button>
             </div>
         </form>

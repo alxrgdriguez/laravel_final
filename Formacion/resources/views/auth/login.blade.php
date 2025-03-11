@@ -12,7 +12,7 @@
 <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-8 w-full max-w-md">
     <!-- Logo y título -->
     <div class="text-center mb-6">
-        <img src="{{ asset('imgs/login-img.png') }}" alt="Moodle FP Online" class="h-16 mx-auto">
+        <img src="{{ asset('imgs/logo.png') }}" alt="Moodle FP Online" class="h-24 mx-auto">
         <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mt-4">Iniciar Sesion</h2>
     </div>
 
