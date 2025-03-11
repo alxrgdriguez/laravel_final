@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 1200)" class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
+<body x-data="{ loading: true }" x-init="setTimeout(() => loading = false, 700)" class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col min-h-screen">
 
 <!-- Pantalla de carga -->
 <div x-show="loading" class="fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-900 z-50">
