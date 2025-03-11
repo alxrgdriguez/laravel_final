@@ -1,64 +1,58 @@
-@props(['title' => 'Inicio | Cursos'])
-
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title }}</title>
-    <link rel="shortcut icon" href="{{asset('favicon.png')}}" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>{{ $title ?? 'Inicio | Cursos' }}</title>
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
+
+    <!-- Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 flex text-gray-900 dark:text-white">
 
 <!-- Sidebar -->
 <aside class="w-64 bg-gray-200 dark:bg-gray-800 min-h-screen p-4 shadow-lg flex flex-col justify-between">
-    <!-- Título -->
     <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 text-center">📊 Dashboard</h2>
 
     <!-- Navegación -->
     <nav class="mt-6 space-y-2 flex-1">
         <a href="{{ route('admin.courses.index') }}"
            class="flex items-center gap-2 p-4 text-lg font-medium text-gray-900 dark:text-gray-300 rounded-lg transition
-                  hover:bg-gray-300 dark:hover:bg-gray-700
-                  {{ request()->routeIs('admin.courses.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
+                      hover:bg-gray-300 dark:hover:bg-gray-700
+                      {{ request()->routeIs('admin.courses.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
             📚 <span>Cursos</span>
         </a>
 
         <a href="{{ route('admin.registrations.index') }}"
            class="flex items-center gap-2 p-4 text-lg font-medium text-gray-900 dark:text-gray-300 rounded-lg transition
-                  hover:bg-gray-300 dark:hover:bg-gray-700
-                  {{ request()->routeIs('admin.registrations.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
+                      hover:bg-gray-300 dark:hover:bg-gray-700
+                      {{ request()->routeIs('admin.registrations.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
             📝 <span>Inscripciones</span>
         </a>
 
         <a href="{{ route('admin.evaluations.index') }}"
            class="flex items-center gap-2 p-4 text-lg font-medium text-gray-900 dark:text-gray-300 rounded-lg transition
-                  hover:bg-gray-300 dark:hover:bg-gray-700
-                  {{ request()->routeIs('admin.evaluations.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
+                      hover:bg-gray-300 dark:hover:bg-gray-700
+                      {{ request()->routeIs('admin.evaluations.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
             🎓 <span>Evaluaciones</span>
         </a>
 
         @if(Auth::user()->isAdmin())
             <a href="{{ route('admin.users.index') }}"
                class="flex items-center gap-2 p-4 text-lg font-medium text-gray-900 dark:text-gray-300 rounded-lg transition
-                  hover:bg-gray-300 dark:hover:bg-gray-700
-                  {{ request()->routeIs('admin.users.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
+                      hover:bg-gray-300 dark:hover:bg-gray-700
+                      {{ request()->routeIs('admin.users.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
                 👥 <span>Usuarios</span>
-            </a>
-        @endif
-        @if(Auth::user()->isAdmin())
-            <a href="{{ route('student.courses.index') }}"
-               class="flex items-center gap-2 p-4 text-lg font-medium text-gray-900 dark:text-gray-300 rounded-lg transition
-              hover:bg-gray-300 dark:hover:bg-gray-700
-              {{ request()->routeIs('student.courses.index') ? 'bg-gray-400 dark:bg-gray-700' : '' }}">
-                🌐 <span>Web Students</span>
             </a>
         @endif
     </nav>
 
-    <!-- Dropdown del usuario -->
+    <!-- Usuario Dropdown -->
     <div class="relative">
         <button onclick="toggleDropdown()" class="w-full flex items-center justify-between px-4 py-3 bg-gray-300 dark:bg-gray-700 rounded-lg text-lg font-medium text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 transition">
             <span> 👤 {{ Auth::user()->name }}</span>
@@ -67,7 +61,6 @@
             </svg>
         </button>
 
-        <!-- Contenido del dropdown -->
         <div id="dropdown-menu" class="absolute bottom-12 left-0 w-full bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg p-2 hidden">
             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-gray-900 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 rounded">⚙️ Mi cuenta</a>
 
@@ -84,7 +77,6 @@
     @yield('content')
 </main>
 
-<!-- Script para mostrar el dropdown hacia arriba -->
 <script>
     function toggleDropdown() {
         const menu = document.getElementById('dropdown-menu');
@@ -95,7 +87,7 @@
 
     document.addEventListener('click', function(event) {
         const dropdown = document.getElementById('dropdown-menu');
-        const button = document.querySelector('button[onclick="toggleDropdown()"]');
+        const button = document.querySelector('button[onclick=\"toggleDropdown()\"]');
         if (!button.contains(event.target) && !dropdown.contains(event.target)) {
             dropdown.classList.add('hidden');
             document.getElementById('dropdown-icon').classList.remove('rotate-180');

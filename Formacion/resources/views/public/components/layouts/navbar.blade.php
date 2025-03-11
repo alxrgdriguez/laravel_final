@@ -1,10 +1,11 @@
 <nav x-data="{ open: false }" class="bg-gradient-to-r from-blue-800 via-indigo-800 to-purple-800 dark:from-gray-900 dark:to-gray-800 shadow-xl py-4">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10">
         <div class="flex justify-between h-16 items-center">
+            <!-- Logo -->
+            <!-- Logo -->
             <div class="flex items-center space-x-6">
-                <!-- Logo -->
                 <a href="{{ route('index') }}" class="flex items-center text-white font-bold text-xl hover:text-yellow-400 transition">
-                    <img src="{{ asset('imgs/login-img.png') }}" alt="Cursos Online" class="h-12 w-auto">
+                    <img src="{{ asset('imgs/logo.png') }}" alt="Cursos Online" class="h-24 w-auto">
                 </a>
             </div>
 
@@ -64,9 +65,9 @@
 
             <!-- Mobile Menu Button -->
             <div class="-mr-2 flex items-center sm:hidden">
-                <button @click="open = !open" class="text-white hover:text-yellow-400 p-3 rounded-lg focus:outline-none transition">
+                <button @click="open = !open" class="text-white hover:text-black p-3 rounded-lg focus:outline-none transition">
                     <svg class="h-7 w-7" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex " stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                 </button>
@@ -75,24 +76,24 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div x-show="open" class="sm:hidden bg-gray-900 text-white p-5 text-lg max-h-[400px] overflow-hidden transition-all ease-in-out duration-300">
-        <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.index')" class="block py-3 font-semibold">🏠 Inicio</x-nav-link>
+    <div x-show="open" class="bg-gradient-to-r from-blue-800 via-indigo-800 to-purple-900 dark:from-gray-900 dark:to-white shadow-xl py-4">
+        <x-nav-link :href="route('student.courses.index')" :active="request()->routeIs('student.courses.index')" class="text-white block py-3 font-semibold">🏠 Inicio</x-nav-link>
 
         @if(Auth::user() && Auth::user()->isAdmin())
-            <x-nav-link :href="route('admin.courses.index')" :active="request()->routeIs('admin.courses.index')" class="block py-3 font-semibold">📊 Dashboard</x-nav-link>
+            <x-nav-link :href="route('admin.courses.index')" :active="request()->routeIs('admin.courses.index')" class="text-white block py-3 font-semibold">📊 Dashboard</x-nav-link>
         @endif
 
         @if(Auth::user() && Auth::user()->isStudent())
-            <x-nav-link :href="route('student.courses.my-courses')" :active="request()->routeIs('student.courses.my-courses')" class="block py-3 font-semibold">📚 Mis Cursos</x-nav-link>
+            <x-nav-link :href="route('student.courses.my-courses')" :active="request()->routeIs('student.courses.my-courses')" class="block text-white py-3 font-semibold">📚 Mis Cursos</x-nav-link>
         @endif
 
         <div class="border-t border-gray-700 my-3"></div>
 
         @auth
-            <x-nav-link :href="route('profile.edit')" class="block py-3 font-semibold">⚙️ Configuración</x-nav-link>
+            <x-nav-link :href="route('profile.edit')" class="block py-3 text-white font-semibold">⚙️ Configuración</x-nav-link>
             <form method="POST" action="{{ route('logout') }}" class="block">
                 @csrf
-                <x-nav-link :href="route('logout')"
+                <x-nav-link :href="route('logout')" class="block py-3 text-white font-semibold"
                             onclick="event.preventDefault(); this.closest('form').submit();">
                     🚪 Cerrar Sesión
                 </x-nav-link>
